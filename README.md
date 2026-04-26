@@ -29,6 +29,10 @@ link under a `## Pics` section. If the image has GPS data, the coordinates are
 either appended to front-matter or added inline as MapView geo links,
 depending on your settings.
 
+The Photo Journal plugin is designed to work in tandem with the map view plugin 
+(https://github.com/esm7/obsidian-map-view) and uses the same tags and front matter
+parameters.
+
 A side-panel lets you inspect the full metadata of any open image without
 leaving Obsidian.
 
