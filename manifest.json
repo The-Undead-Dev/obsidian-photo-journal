@@ -1,7 +1,7 @@
 {
   "id": "photo-journal",
   "name": "Photo Journal",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minAppVersion": "1.4.0",
   "description": "Automatically links photos into daily notes via EXIF date, shows image metadata in a side panel, and stores GPS coordinates in note front-matter.",
   "author": "The Undead Dev",

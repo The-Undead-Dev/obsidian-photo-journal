@@ -48,12 +48,12 @@ export class MetadataView extends ItemView {
 		// Re-render whenever the user switches to a different file.
 		this.activeLeafListener = this.app.workspace.on(
 			"active-leaf-change",
-			() => this.refresh()
+			() => { void this.refresh(); }
 		) as unknown as () => void;
 
 		// Register the event so it's cleaned up when the view closes.
 		this.registerEvent(
-			this.app.workspace.on("active-leaf-change", () => this.refresh())
+			this.app.workspace.on("active-leaf-change", () => { void this.refresh(); })
 		);
 
 		// Render immediately for any already-open image.
@@ -77,7 +77,7 @@ export class MetadataView extends ItemView {
 		const header = contentEl.createDiv("pj-header");
 		const iconSpan = header.createSpan("pj-header-icon");
 		setIcon(iconSpan, "image");
-		header.createEl("h4", { text: "Image Metadata", cls: "pj-header-title" });
+		header.createEl("h4", { text: "Image metadata", cls: "pj-header-title" });
 
 		// Content area (populated by refresh())
 		contentEl.createDiv("pj-content");
@@ -138,14 +138,14 @@ export class MetadataView extends ItemView {
 	private renderMetadata(container: HTMLElement, meta: ImageMetadata): void {
 		// ── Date & time ───────────────────────────────────────────────────────
 		if (meta.date) {
-			const section = this.createSection(container, "Date & Time", "calendar");
+			const section = this.createSection(container, "Date & time", "calendar");
 			this.addRow(section, "Captured", meta.date.toLocaleString());
 			if (meta.dateRaw) this.addRow(section, "Raw EXIF date", meta.dateRaw);
 		}
 
 		// ── GPS location ──────────────────────────────────────────────────────
 		if (meta.latitude != null && meta.longitude != null) {
-			const section = this.createSection(container, "GPS Location", "map-pin");
+			const section = this.createSection(container, "GPS location", "map-pin");
 			this.addRow(section, "Latitude", meta.latitude.toFixed(6));
 			this.addRow(section, "Longitude", meta.longitude.toFixed(6));
 			if (meta.altitude != null)
@@ -212,11 +212,18 @@ export class MetadataView extends ItemView {
 		// ── All raw fields ────────────────────────────────────────────────────
 		const rawKeys = Object.keys(meta.raw);
 		if (rawKeys.length > 0) {
-			const section = this.createSection(container, "All Fields", "list", true);
+			const section = this.createSection(container, "All fields", "list", true);
 			for (const key of rawKeys.sort()) {
 				const val = meta.raw[key];
 				if (val == null) continue;
-				let display = val instanceof Date ? val.toLocaleString() : String(val);
+				let display: string;
+				if (val instanceof Date) {
+					display = val.toLocaleString();
+				} else if (typeof val === "string" || typeof val === "number" || typeof val === "boolean") {
+					display = String(val);
+				} else {
+					continue;
+				}
 				if (display.length > 80) display = display.slice(0, 77) + "…";
 				this.addRow(section, key, display);
 			}

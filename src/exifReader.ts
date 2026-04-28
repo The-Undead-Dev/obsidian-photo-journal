@@ -88,7 +88,11 @@ export async function readImageMetadata(
 	// ── Helper: safely pull a string from raw ─────────────────────────────────
 	const str = (...keys: string[]): string | undefined => {
 		for (const k of keys) {
-			if (raw[k] != null) return String(raw[k]);
+			const v = raw[k];
+			if (v == null) continue;
+			if (typeof v === "string") return v;
+			if (typeof v === "number" || typeof v === "boolean") return String(v);
+			if (v instanceof Date) return v.toISOString();
 		}
 		return undefined;
 	};

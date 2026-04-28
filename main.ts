@@ -46,7 +46,7 @@ export default class PhotoJournalPlugin extends Plugin {
 		);
 
 		this.addRibbonIcon("photo-journal", "Photo Journal", () => {
-			this.activateMetadataView();
+			void this.activateMetadataView();
 		});
 
 		// ── Listen for newly created vault files ──────────────────────────────
@@ -73,7 +73,7 @@ export default class PhotoJournalPlugin extends Plugin {
 				const view = leaf.view;
 				// Only react when an image file is opened in the active leaf.
 				if (view?.getViewType() === "image") {
-					this.activateMetadataView();
+					void this.activateMetadataView();
 				}
 			})
 		);
@@ -94,12 +94,12 @@ export default class PhotoJournalPlugin extends Plugin {
 		// ── Settings tab ──────────────────────────────────────────────────────
 		this.addSettingTab(new PhotoJournalSettingTab(this.app, this));
 
-		console.log("PhotoJournal plugin loaded.");
+		console.debug("PhotoJournal plugin loaded.");
 	}
 
 	onunload() {
 		// Obsidian automatically detaches registered views; nothing extra needed.
-		console.log("PhotoJournal plugin unloaded.");
+		console.debug("PhotoJournal plugin unloaded.");
 	}
 
 	// ── Settings helpers ──────────────────────────────────────────────────────

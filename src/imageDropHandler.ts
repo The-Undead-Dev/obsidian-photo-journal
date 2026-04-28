@@ -60,7 +60,7 @@ export class ImageDropHandler {
 
 		const noteDate = this.resolveProcessingDate(file, meta.date);
 		if (!noteDate) {
-			console.log(
+			console.debug(
 				`PhotoJournal: no usable date metadata found for ${file.name}, skipping.`
 			);
 			return;
@@ -106,7 +106,7 @@ export class ImageDropHandler {
 
 		// Note doesn't exist — create it if the setting allows.
 		if (!this.settings.createDailyNoteIfMissing) {
-			console.log(
+			console.debug(
 				`PhotoJournal: daily note ${notePath} not found and auto-create is disabled.`
 			);
 			return null;
@@ -285,7 +285,7 @@ export class ImageDropHandler {
 		}
 
 		await this.app.vault.modify(note, content);
-		console.log(`PhotoJournal: linked ${image.name} into ${note.path}`);
+		console.debug(`PhotoJournal: linked ${image.name} into ${note.path}`);
 	}
 
 	private async buildPicsSectionBody(
@@ -503,7 +503,7 @@ export class ImageDropHandler {
 		const newContent = `---\n${prop}:\n  - "${coordStr}"\n---\n\n${content}`;
 		await this.app.vault.modify(note, newContent);
 
-		console.log(`PhotoJournal: added location ${coordStr} to ${note.path}`);
+		console.debug(`PhotoJournal: added location ${coordStr} to ${note.path}`);
 	}
 
 	private async upsertInlineLocation(
@@ -516,7 +516,7 @@ export class ImageDropHandler {
 		const radiusMeters = Math.max(0, this.settings.locationDedupeRadiusMeters);
 
 		const originalContent = normalizeLineEndings(await this.app.vault.read(note));
-		let content = this.ensureInlineLocationsFrontMatter(originalContent);
+		const content = this.ensureInlineLocationsFrontMatter(originalContent);
 
 		const dedupeCoords = this.extractInlineModeDedupeCoords(content);
 		const tooClose = dedupeCoords.some((existing) => {
@@ -544,7 +544,7 @@ export class ImageDropHandler {
 
 		if (updatedContent !== originalContent) {
 			await this.app.vault.modify(note, updatedContent);
-			console.log(`PhotoJournal: added inline geo ${coordStr} to ${note.path}`);
+			console.debug(`PhotoJournal: added inline geo ${coordStr} to ${note.path}`);
 		}
 	}
 
