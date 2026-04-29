@@ -123,7 +123,7 @@ export default class PhotoJournalPlugin extends Plugin {
 		// If the view is already open somewhere, just reveal it.
 		const existing = workspace.getLeavesOfType(METADATA_VIEW_TYPE);
 		if (existing.length > 0) {
-			workspace.revealLeaf(existing[0]);
+			await workspace.revealLeaf(existing[0]);
 			return;
 		}
 
@@ -131,7 +131,7 @@ export default class PhotoJournalPlugin extends Plugin {
 		const leaf = workspace.getRightLeaf(false);
 		if (leaf) {
 			await leaf.setViewState({ type: METADATA_VIEW_TYPE, active: true });
-			workspace.revealLeaf(leaf);
+			await workspace.revealLeaf(leaf);
 		}
 	}
 
