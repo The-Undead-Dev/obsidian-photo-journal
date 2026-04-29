@@ -19,8 +19,6 @@ export class PhotoJournalSettingTab extends PluginSettingTab {
 		const { containerEl } = this;
 		containerEl.empty();
 
-		new Setting(containerEl).setName("Photo journal settings").setHeading();
-
 		// ── Daily notes folder ────────────────────────────────────────────────
 		new Setting(containerEl)
 			.setName("Daily notes folder")
